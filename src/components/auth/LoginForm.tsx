@@ -80,6 +80,21 @@ export function LoginForm() {
         description: data.message,
       })
 
+      if (data.user.role === 'student') {
+        const profileResponse = await fetch(`${API_URL}/api/v1/jobseeker/profile`, {
+          headers: {
+            'Authorization': `Bearer ${data.token}`,
+            'Accept': 'application/json',
+          }
+        });
+
+        if (profileResponse) {
+          router.push('/user/profile');
+          return;
+        }
+      }
+
+
       // Redirect based on role
       handleRoleBasedRedirect(data.user.role)
 
