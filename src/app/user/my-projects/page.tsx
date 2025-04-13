@@ -163,7 +163,7 @@ export default function MyProjectsPage() {
   }
 
   const handleViewDetails = (projectId: number) => {
-    router.push(`/projects/${projectId}`)
+    router.push(`/company/projects/${projectId}`)
   }
 
   const getStatusColor = (status: string) => {

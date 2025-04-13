@@ -38,7 +38,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
         description: error.message,
         variant: "destructive"
       })
-      router.push('/projects')
+      router.push('/company/projects')
     } finally {
       setIsLoading(false)
     }

@@ -9,9 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -39,6 +42,7 @@ interface ProjectApplicantsProps {
 }
 
 export function ProjectApplicants({ projectId }: ProjectApplicantsProps) {
+  const router=useRouter();
   const { toast } = useToast();
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,74 +121,39 @@ export function ProjectApplicants({ projectId }: ProjectApplicantsProps) {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {applicants.map((applicant) => (
-        <Card key={applicant.id} className="overflow-hidden">
-          <CardHeader className="bg-gray-50">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="relative w-12 h-12">
-                  <Image
-                    src={applicant.jobseeker.image ? `${API_URL}/storage/${applicant.jobseeker.image}` : '/placeholder-user.jpg'}
-                    alt={applicant.jobseeker.user.name}
-                    fill
-                    className="rounded-full object-cover"
-                    unoptimized
-                  />
+    return (
+      <div className="space-y-6">
+        {applicants.map((applicant) => (
+         <div key={applicant.id} className="flex flex-wrap w-full">
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+              <CardHeader className="bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative w-12 h-12">
+                      <Image
+                        src={applicant.jobseeker.image ? `${API_URL}/storage/${applicant.jobseeker.image}` : '/placeholder-user.jpg'}
+                        alt={applicant.jobseeker.user.name}
+                        fill
+                        className="rounded-full object-cover"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="pb-5">
+                      <CardTitle className="text-lg">{applicant.jobseeker.user.name}</CardTitle>
+                      <p className="text-sm text-gray-500">{applicant.jobseeker.user.email}</p>
+                      {applicant.jobseeker.college && (
+                        <p className="text-sm text-gray-500">{applicant.jobseeker.college.name}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-lg">{applicant.jobseeker.user.name}</CardTitle>
-                  <p className="text-sm text-gray-500">{applicant.jobseeker.user.email}</p>
-                  {applicant.jobseeker.college && (
-                    <p className="text-sm text-gray-500">{applicant.jobseeker.college.name}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">
-                  Applied: {new Date(applicant.applied_date).toLocaleDateString()}
-                </span>
-                <Select
-                  value={applicant.jobseeker_status}
-                  onValueChange={(value) => handleStatusChange(applicant.id, value)}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="applied">Applied</SelectItem>
-                    <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium mb-2">Professional Summary</h4>
-                <p className="text-gray-600">{applicant.jobseeker.professional_summary}</p>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">Skills</h4>
-                <div className="flex flex-wrap gap-2">
-                  {applicant.jobseeker.skills.map((skill, index) => (
-                    <Badge
-                      key={index}
-                      variant="secondary"
-                      className="px-3 py-1"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
+                <Button onClick={() => router.push(`/company/projects/${projectId}/applications/${applicant.id}`)}key={applicant.id}>View Resume</Button>
+              </CardHeader>
+              
+            </Card>
+            
+          </div>
+        ))}
+      </div>
+    );
 } 

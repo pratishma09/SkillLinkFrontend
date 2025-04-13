@@ -59,7 +59,7 @@ export default function ProfilePage() {
     <>
     <JobPortalHeader/>
     <div className="container mx-auto py-8">
-      <ProfileForm initialData={profile || null} />
+      <ProfileForm initialData={profile || undefined} />
     </div>
     <JobPortalFooter/>
     </>

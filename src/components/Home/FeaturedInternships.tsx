@@ -200,7 +200,7 @@ export function FeaturedInternships({ internships }: FeaturedInternshipsProps) {
       return
     }
 
-    router.push(`/projects/${projectId}`)
+    router.push(`/company/projects/${projectId}`)
   }
 
   return (

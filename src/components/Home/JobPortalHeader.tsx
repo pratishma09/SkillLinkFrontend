@@ -43,6 +43,7 @@ export function JobPortalHeader() {
   }
 
   const isStudent = userRole === 'student'
+  const isAdmin =userRole==='admin'
 
   return (
     <header className="bg-white shadow-sm">
@@ -85,9 +86,16 @@ export function JobPortalHeader() {
                     Saved
                   </Button>
                 )}
+                 {!isAdmin? (
                 <Button onClick={() => router.push(isStudent ? "/user/profile" : `/profile`)}>
                   Profile
                 </Button>
+                 ):(
+                  <>
+                  <Button onClick={()=>router.push('/admin/pending-users')}>Users</Button>
+                  <Button onClick={()=>router.push('/admin/dashboard')}>Category</Button>
+                  </>
+                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center gap-2">
@@ -95,11 +103,14 @@ export function JobPortalHeader() {
                       {userName || 'Profile'}
                     </Button>
                   </DropdownMenuTrigger>
+                  
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => router.push(isStudent ? "/user/profile" : `/${userRole}/dashboard`)}>
+                  {!isAdmin && (
+                    <DropdownMenuItem onClick={() => router.push(isStudent ? "/user/profile" : `/profile`)}>
                       <User className="mr-2 h-4 w-4" />
                       Profile
                     </DropdownMenuItem>
+                  )}
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />
                       Logout

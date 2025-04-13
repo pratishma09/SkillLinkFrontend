@@ -160,7 +160,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ id: s
           </div>
           {userRole === 'company' && (
             <div className="flex gap-4 pt-4">
-              <Button onClick={() => router.push(`/projects/${id}/edit`)}>
+              <Button onClick={() => router.push(`/company/projects/${id}/edit`)}>
                 Edit Project
               </Button>
               <Button variant="destructive" onClick={handleDelete}>

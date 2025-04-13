@@ -53,7 +53,7 @@ export default function CompanyProjectsPage() {
       <div className="container mx-auto py-8 px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">My Projects</h1>
-          <Button onClick={() => router.push('/projects/create')}>
+          <Button onClick={() => router.push('/company/projects/create')}>
             Post New Project
           </Button>
         </div>
@@ -61,7 +61,7 @@ export default function CompanyProjectsPage() {
         {projects.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500 mb-4">You haven't posted any projects yet</p>
-            <Button onClick={() => router.push('/projects/create')}>
+            <Button onClick={() => router.push('/company/projects/create')}>
               Create Your First Project
             </Button>
           </div>
@@ -71,7 +71,7 @@ export default function CompanyProjectsPage() {
               <div key={project.id} className="relative">
                 <ProjectCard
                   project={project}
-                  onViewDetails={(id) => router.push(`/projects/${id}`)}
+                  onViewDetails={(id) => router.push(`/company/projects/${id}`)}
                 />
                 <Button 
                   variant="outline" 

@@ -30,8 +30,13 @@ export interface Company {
 
 export interface College {
   id: number;
-  name: string;
-  location: string;
-  description: string;
-  logo_url: string;
+  logo:string;
+  description:string;
+  website:string;
+  phone:string;
+  address:string;
+  name:string;
+  user:{
+    name:string
+  }
 } 

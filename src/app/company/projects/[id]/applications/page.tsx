@@ -79,7 +79,7 @@ export default function ProjectApplicationsPage({ params }: { params: Promise<{ 
             <div className="flex space-x-4">
               <Button 
                 variant="outline"
-                onClick={() => router.push(`/projects/${id}`)}
+                onClick={() => router.push(`/company/projects/${id}`)}
               >
                 View Project
               </Button>
