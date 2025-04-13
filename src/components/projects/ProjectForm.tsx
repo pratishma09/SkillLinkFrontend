@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -17,10 +17,17 @@ interface ProjectFormProps {
   isEditing?: boolean
 }
 
+interface Category {
+  id: number
+  name: string
+}
+
 export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps) {
   const router = useRouter()
+  const token=localStorage.getItem('token')
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     description: initialData?.description || "",
@@ -28,8 +35,30 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
     requirements: initialData?.requirements?.join('\n') || "",
     skills_required: initialData?.skills_required?.join(', ') || "",
     deadline: initialData?.deadline?.split('T')[0] || "",
-    status: initialData?.status || "active"
+    status: initialData?.status || "active",
+    location: initialData?.location || "",
+    salary: initialData?.salary || "",
+    project_category_id: initialData?.project_category_id || ""
   })
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_URL}/categories`,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':`Bearer ${token}`
+          },
+        })
+        const data = await response.json()
+        console.log(data)
+        setCategories(data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+    fetchCategories()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,7 +74,8 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
         method: isEditing ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization':`Bearer ${token}`,
+          'Accept':'application/json'
         },
         body: JSON.stringify({
           ...formData,
@@ -109,6 +139,25 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={formData.project_category_id?.toString()}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, project_category_id: parseInt(value) }))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="type">Project Type</Label>
             <Select
               value={formData.type_of_project}
@@ -124,6 +173,27 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
                 <SelectItem value="contract">Contract</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              value={formData.location}
+              onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+              placeholder="e.g., Remote, New York, etc."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="salary">Salary/Stipend</Label>
+            <Input
+            type="number"
+              id="salary"
+              value={formData.salary}
+              onChange={(e) => setFormData(prev => ({ ...prev, salary: e.target.value }))}
+              placeholder="e.g., $50,000/year, $20/hour, etc."
+            />
           </div>
 
           <div className="space-y-2">

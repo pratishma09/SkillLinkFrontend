@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, Menu, MessageSquare, FileText, LogOut, User } from "lucide-react"
+import { Search, Menu, MessageSquare, FileText, LogOut, User, Bookmark } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
@@ -31,6 +31,7 @@ export function JobPortalHeader() {
     localStorage.removeItem('token')
     localStorage.removeItem('userRole')
     localStorage.removeItem('userName')
+    localStorage.removeItem('userId')
     setIsLoggedIn(false)
     setUserRole(null)
     setUserName(null)
@@ -49,7 +50,7 @@ export function JobPortalHeader() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0">
-              <span className="text-2xl font-bold text-indigo-600">JobPortal</span>
+              <span className="text-2xl font-bold text-indigo-600">SkillLink</span>
             </Link>
             {/* <nav className="hidden md:ml-6 md:flex md:space-x-8">
               <Link href="/jobs" className="text-gray-500 hover:text-gray-900">
@@ -64,27 +65,29 @@ export function JobPortalHeader() {
             </nav> */}
           </div>
           <div className="hidden md:flex items-center space-x-4">
-            <div className="relative">
+            {/* <div className="relative">
               <Input
                 type="text"
                 placeholder="Search jobs..."
                 className="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            </div>
+            </div> */}
             {isLoggedIn ? (
               <>
-                <Button onClick={() => router.push(isStudent ? "/student/dashboard" : `/${userRole}/dashboard`)}>
-                  Dashboard
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => router.push(isStudent ? "/student/chat" : `/${userRole}/chat`)}>
-                  <MessageSquare className="h-5 w-5" />
-                </Button>
                 {isStudent && (
-                  <Button variant="ghost" size="icon" onClick={() => router.push("/student/resume")}>
-                    <FileText className="h-5 w-5" />
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-2"
+                    onClick={() => router.push("/my-projects")}
+                  >
+                    <Bookmark className="h-4 w-4" />
+                    Saved
                   </Button>
                 )}
+                <Button onClick={() => router.push(isStudent ? "/user/profile" : `/profile`)}>
+                  Profile
+                </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center gap-2">
@@ -93,7 +96,7 @@ export function JobPortalHeader() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => router.push(`/${userRole}/profile`)}>
+                    <DropdownMenuItem onClick={() => router.push(isStudent ? "/user/profile" : `/${userRole}/dashboard`)}>
                       <User className="mr-2 h-4 w-4" />
                       Profile
                     </DropdownMenuItem>
@@ -131,20 +134,21 @@ export function JobPortalHeader() {
             <div className="flex items-center px-5">
               {isLoggedIn ? (
                 <div className="space-y-2 w-full">
+                  {isStudent && (
+                    <Button 
+                      className="w-full flex items-center justify-center gap-2"
+                      onClick={() => router.push("/my-projects")}
+                    >
+                      <Bookmark className="h-4 w-4" />
+                      Saved Projects
+                    </Button>
+                  )}
                   <Button
                     className="w-full"
                     onClick={() => router.push(isStudent ? "/student/dashboard" : `/${userRole}/dashboard`)}
                   >
                     Dashboard
                   </Button>
-                  <Button className="w-full" onClick={() => router.push(isStudent ? "/student/chat" : `/${userRole}/chat`)}>
-                    Messages
-                  </Button>
-                  {isStudent && (
-                    <Button className="w-full" onClick={() => router.push("/student/resume")}>
-                      Resume
-                    </Button>
-                  )}
                   <Button className="w-full" onClick={() => router.push(`/${userRole}/profile`)}>
                     Profile
                   </Button>

@@ -30,19 +30,19 @@ export function LoginForm() {
   const handleRoleBasedRedirect = (role: string) => {
     switch (role) {
       case 'admin':
-        router.push('/home')
+        router.push('/admin/dashboard')
         break
       case 'student':
         router.push('/student/dashboard')
         break
       case 'college':
-        router.push('/college/dashboard')
+        router.push('/profile')
         break
       case 'company':
-        router.push('/company/dashboard')
+        router.push('/profile')
         break
       default:
-        router.push('/home')
+        router.push('/')
     }
   }
 

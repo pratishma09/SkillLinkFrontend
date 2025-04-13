@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Clock, Briefcase, Building, Calendar } from "lucide-react"
+import { Clock, Briefcase, Building, Calendar, MapPin, DollarSign, Tag } from "lucide-react"
 import { format } from "date-fns"
 import { JobPortalHeader } from "@/components/Home/JobPortalHeader"
 
@@ -38,6 +38,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ id: s
       if (!response.ok) throw new Error('Failed to fetch project details')
       
       const data = await response.json()
+      console.log(data)
       setProject(data)
     } catch (error: any) {
       toast({
@@ -108,8 +109,20 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ id: s
           
           <div className="flex flex-wrap gap-4 text-sm text-gray-500">
             <div className="flex items-center gap-1">
+              <Tag className="h-4 w-4" />
+              <span>{project.projectcategory?.name}</span>
+            </div>
+            <div className="flex items-center gap-1">
               <Briefcase className="h-4 w-4" />
               <span>{project.type_of_project}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MapPin className="h-4 w-4" />
+              <span>{project.location || 'Remote'}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <DollarSign className="h-4 w-4" />
+              <span>{project.salary || 'Negotiable'}</span>
             </div>
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />

@@ -85,6 +85,7 @@ export function EducationForm({ initialEducation = [], onSave }: EducationFormPr
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type':'application/json',
             'Accept': 'application/json',
           }
         });

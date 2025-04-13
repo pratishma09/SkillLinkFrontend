@@ -64,10 +64,10 @@ export default function ProjectsPage() {
         <JobPortalHeader/>
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-3xl font-bold">Available Projects</h1>
+        <h1 className="text-3xl font-bold">Available Internships</h1>
         {localStorage.getItem('userRole') === 'company' && (
           <Button onClick={() => router.push('/projects/create')}>
-            Post New Project
+            Post New Internship
           </Button>
         )}
       </div>

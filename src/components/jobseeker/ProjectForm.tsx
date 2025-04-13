@@ -50,7 +50,7 @@ export function ProjectForm({ initialProjects = [], onSave }: ProjectFormProps) 
         });
 
         if (!response.ok) {
-          throw new Error('Failed to save project');
+          throw new Error(`Failed to save project.`);
         }
       }));
 
@@ -61,7 +61,7 @@ export function ProjectForm({ initialProjects = [], onSave }: ProjectFormProps) 
     } catch (error) {
       toast({
         variant: "destructive",
-        description: "Failed to update projects",
+        description: `Failed to update project`,
       });
     } finally {
       setIsLoading(false);
